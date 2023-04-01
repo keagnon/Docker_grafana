@@ -1,0 +1,64 @@
+version: '3.9'
+services:
+  prometheus:
+    image: prom/prometheus:v2.28.1 # L'image Docker de Prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Les fichiers de configuration Prometheus sont stockés dans le dossier ./prometheus sur l'hôte et montés dans le conteneur
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml   # Chemin du fichier de configuration Prometheus
+      - --storage.tsdb.path=/prometheus
+    ports:
+      - "9090:9090" # Port utilisé pour accéder à l'interface Web de Prometheus
+    networks:
+      - monitoring
+
+  grafana: 
+    image: grafana/grafana:latest # L'image Docker de Grafana
+    volumes:
+      - ./grafana_datasources.yml:/etc/grafana/provisioning/datasources/all.yaml
+      - ./grafana_config.ini:/etc/grafana/config.ini
+    
+    ports:
+      - "3000:3000" # Port utilisé pour accéder à l'interface Web de Grafana
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: google/cadvisor:latest # L'image Docker de cAdvisor
+
+    ports:
+      - "8081:8081" # Port utilisé pour accéder à l'interface Web de cAdvisor ici nous avons utilisé le port 8081 car le 8080 est déjà utilisé
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:v1.2.2 # L'image Docker de Node Exporter
+    ports:
+      - "9100:9100" # Port utilisé par Node Exporter
+    networks:
+      - monitoring
+
+##########################Bonus part
+
+  prom-gateway:
+    image: prom/pushgateway:v1.5.0 # L'image Docker de Prometheus
+    ports:
+      - '9091:9091' # Port utilisé pour accéder à l'interface Web de Prometheus Gateway 
+    networks:
+      - monitoring
+
+  openfaas:
+    image: openfaas/faas-cli:latest #  l'image Docker de notre conteneur serverless openfaas
+    ports:
+      - "8080:8080"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+
