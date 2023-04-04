@@ -1,11 +1,11 @@
 # Docker_grafana
-L'objectif de ce projet est de faire un docker compose avec Grafana, Prometheus, cAdvisor (prometheus), Node Exporter (prometheus),Prom Gateway + Autre container serverless
+L'objectif de ce projet est de faire un docker compose avec Grafana, Prometheus, cAdvisor (prometheus), Node Exporter (prometheus),Prom Gateway + Autre container serverless dans notre cas nous avons choisir openfaas.
 
 Etapes pour la mise en place de ce projet :
 
 Extraire les fichiers dans un dossier qui doit contenir les fichiers suivants : 
 
-#Le fichier docker-compose.yml lance les services suivants : Grafana, Prometheus, cAdvisor, Node Exporter,Prom Gateway, Autre container serverless(openfaas).
+Le fichier docker-compose.yml lance les services suivants : Grafana, Prometheus, cAdvisor, Node Exporter,Prom Gateway, Autre container serverless(openfaas).
 -docker-compose.yml
 
 #définit la configuration de démarrage de grafana dans docker compose
